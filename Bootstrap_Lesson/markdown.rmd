@@ -1,0 +1,61 @@
+---
+title: "Bootstrapping Samples Manually"
+output: html_document
+---
+
+Although there are functions in R that allow us to create bootstrapped samples and confidence intervals, it is also relatively straightforward to perform bootstrapping using user-defined functions and loops.  
+
+Say we have a sample from a true underlying distribution
+
+```{r}
+set.seed(1293)
+pop <- rgamma(10000, shape=1, scale=2)
+samplesize=50
+samp <- sample(pop, size=samplesize, replace=T)
+```
+
+
+First we will define how many bootstrapped samples we would like to take:
+```{r}
+boot = 10000
+```
+
+Then we will create an empty vector to store the statistics (means)
+```{r}
+boot.mean <- rep(NA,boot)
+```
+
+Then we will sample, with replacement, a new set of data from the observed sample, and calculate the statistic for each.
+```{r}
+for (i in 1:boot){
+  boot.i <- sample(samp, samplesize, replace=T)
+  boot.mean[i] <- mean(boot.i)
+}
+```
+Now we can plot the results:
+```{r}
+hist(boot.mean, main="Distribution of Sample Mean, Bootstrap", xlab=NA)
+
+```
+
+We can also calculate the variance and the percentile confidence intervals
+```{r}
+var <- var(boot.mean)
+var
+
+ci <- quantile(boot.mean,probs=c(.025,.975))
+ci
+```
+
+```{r}
+plot(density(boot.mean), main="Distribution of Sample Mean", xlab=NA)
+abline(v=mean(samp))
+abline(v=ci[1], col="red")
+abline(v=ci[2], col="red")
+abline(v=mean(samp)+(1.96*sd(samp)/sqrt(samplesize)), col="blue")
+abline(v=mean(samp)-(1.96*sd(samp)/sqrt(samplesize)), col="blue")
+
+legend("topright", c("Bootstrap", "Normal Assumption") ,col=c("red", "blue"), pch=1)
+
+```
+
