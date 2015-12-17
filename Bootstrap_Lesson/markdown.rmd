@@ -10,7 +10,7 @@ Say we have a sample from a true underlying distribution
 ```{r}
 set.seed(1293)
 pop <- rgamma(10000, shape=1, scale=2)
-samplesize=50
+samplesize=100
 samp <- sample(pop, size=samplesize, replace=T)
 ```
 
