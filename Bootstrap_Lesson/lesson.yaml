@@ -44,21 +44,21 @@
   FigureType: new
   
 - Class: text
-  Output: The 'sample()' function allows us to sample from a vector, with a certain size, and with or without replacement. We will use this function again later, but here we will just use it to generate our original sampled data. Don't forget you can access more information about this function using ?sample.
+  Output: The 'sample()' function allows us to sample from a vector, to create a new vector of a certain size, and with or without replacement. We will use this function again later, but here we will just use it to generate our original sampled data. Don't forget you can access more information about this function using ?sample.
   
 - Class: cmd_question
-  Output: Let's try it out. Generate our sample with the command "samp <- sample(pop, size=200, replace=T)"
+  Output: Let's try it out. Generate our 200-observation sample with the command "samp <- sample(pop, size=200, replace=T)"
   CorrectAnswer: samp <- sample(pop, size=200, replace=T)
   AnswerTests: omnitest('samp <- sample(pop, size=200, replace=T)')
   Hint: Type "samp <- sample(pop, size=200, replace=T)"
   
+- Class: text
+  Output: Now we have a sample. Let's plot that too (using hist())
+  
 - Class: figure
-  Output: Great! Now we have a sample. Let's plot that too (using hist())
+  Output: Now we have a sample from our population. Let's see what the mean and sd are...
   Figure: figure2.R
   FigureType: new
-  
-- Class: text
-  Output: Now we have a sample from our population. Let's see what the mean and sd are...
   
 - Class: cmd_question
   Output: Calculate the mean and save it as samp.mean
@@ -79,30 +79,36 @@
   Output: What we want to do is simulate taking repeated samples from the population by taking repeated samples from the obtained sample. This seems confusing, but let's try it out and get some intuition as we go.
   
 - Class: cmd_question
-  Output: You should remember the "sample()" function. Let's use that now to get a bootstrapped sample from our original sample. Again, we will sample this at the same size of our existing sample, and do it with replacement. Call it samp.b1
+  Output: You should remember the "sample()" function. Let's use that now to get a "bootstrapped" sample from our original sample. We will sample this at the same size of our existing sample (200), and do it with replacement. Call it samp.b1
   CorrectAnswer: samp.b1 <- sample(samp, size=200, replace=T)
   AnswerTests: any_of_exprs('samp.b1 <- sample(samp, size=200, replace=T)','samp.b1 = sample(samp, size=200, replace=T)')
   Hint: Type "samp.b1 <- sample(samp, size=200, replace=T)"
   
 - Class: cmd_question
-  Output: Great! Now we have a bootstrapped sample, which simulates what would happen if we could take another sample from the population directly. Here we assume that our original sample is representative of the population. Let's calculate the mean and save it as samp.b1mean and see how we did.
+  Output: Now we have a bootstrapped sample, which simulates what would happen if we could take another sample from the population directly. Here we assume that our original sample is representative of the population. Let's calculate the mean and save it as samp.b1mean and see how we did.
   CorrectAnswer: samp.b1mean <- mean(samp.b1)
   AnswerTests: any_of_exprs('samp.b1mean <- mean(samp.b1)', 'samp.mean = mean(samp.b1)')
   Hint: Type "samp.b1mean <- mean(samp.b1)"
   
+- Class: text
+  Output: This time, our sample mean is slightly different, which we can also visualize by plotting. 
+  
 - Class: figure
-  Output: This time, our sample mean is slightly different, which we can also visualize by plotting. Hopefully you are beginning to see the methodology here. With repeated boostrapped samples and repeated calculations of the mean, we can get a distribution of means, which can help give us a better picture of the statistic itself, in relation to the population.
+  Output: Hopefully you are beginning to see the methodology here. With repeated boostrapped samples and repeated calculations of the mean, we can get a distribution of means, which can help give us a better picture of the statistic itself, in relation to the population.
   Figure: figure3.R
   FigureType: new 
   
 - Class: cmd_question
-  Output: You might be wondering if we have to generate all these samples by hand.. Well luckily, we don't have to! There is an R function that can help us, called "boot"! At the start of the lesson, we installed (if necessary) and loaded this library. Let's look at the help file with "?boot"
+  Output: You might be wondering if we have to generate each of these samples individually by hand.. Well luckily, we don't have to! There is an R function that can help us, called "boot"! At the start of the lesson, we installed (if necessary) and loaded this library. Let's look at the help file with "?boot"
   CorrectAnswer: ?boot
   AnswerTests: omnitest('?boot')
   Hint: Type "?boot"
   
 - Class: text
-  Output: The boot function takes the data, the statistic to be calculated, and the number of samples to be generated. Typically, we generate as many samples as computationally feasible. Here we will just calculated 1000. I have already created a function called meanFunc to calculate the mean for each sample- the "boot" function will not just take the default mean function as an argument. You could create a similar function to calculate other statistics (ie median)
+  Output: The boot function takes the data, the statistic to be calculated, and the number of samples to be generated as arguments. Typically, we generate as many samples as computationally feasible. Here we will just calculate 1000. I have already created a function called meanFunc to calculate the mean for each sample- "meanFunc <- function(x,i){mean(x[i])}"
+  
+- Class: text
+  Output: We must do this becuase the "boot" function will not just take the usual "mean()" function as an argument. You could create a similar function to calculate other statistics (ie median).
   
 - Class: cmd_question
   Output: Generate the samples from "samp" and assign it to "boot"- "boot <- boot(samp,meanFunc,1000)"
@@ -117,10 +123,10 @@
   Hint: Type "plot(boot)"
   
 - Class: text
-  Output: On the left we see a histogram of the statistic (means) of our bootstrapped samples. We can see that these values all fall very closely around 0, which we know is the true underlying mean of the population.
+  Output: On the left we see a histogram of the statistic (means) of our bootstrapped samples. We can see that these values all fall very closely around 0, which we know is the true underlying mean of the population. On the right is a normal probability plot or QQ-plot. If the distribution appears to be normal, then using assumptions of normality when creating confidence intervals with the bootstrap standard error would be appropriate.
   
 - Class: text
-  Output: We can also get a confidence interval around the mean of the bootstrapped samples. There are many different methods of calculation of these intervals, all of which are available through the boot library, (and which can be read about further here <http://www.tau.ac.il/~saharon/Boot/10.1.1.133.8405.pdf>). We will use the percentile method here.
+  Output: There are many different methods of calculation of these confidence intervals, all of which are available through the boot library, (and which can be read about further here <http://www.tau.ac.il/~saharon/Boot/10.1.1.133.8405.pdf>). For this example, we will use the percentile method. In the percentile method, the 2.5% and 97.5% quantiles are calculated from the bootstrapped distribution, and form the lower and upper bounds of the confidence interval. This method is robust to the shape of the bootstrapped distribution.
   
 - Class: cmd_question
   Output: Let's get the confidence interval now- boot.ci(boot,type="perc")
@@ -129,21 +135,27 @@
   Hint: Type "boot.ci(boot,type="perc")"
   
 - Class: text
-  Output: So now we have a 95% confidence interval for how precise our estimate of the mean is for this population!
+  Output: So now we have a 95% confidence interval for how precise our estimate of the mean is for this population! We can see that this interval does in fact cover the true mean, which is what we would expect.
   
 - Class: text
-  Output: Even though there is a function, it is straightforward enough to also create the bootstrapped samples with a loop. Instead of walking you through it, I have included the code and an example in this file.
+  Output: Even though there is the "boot" function to help us, it is straightforward enough to also create the bootstrapped samples and confidence intervals with a loop. Instead of walking you through it, I have included the code and an example in the next file.
   
 - Class: figure
   Output: Opening html...
-  Figure: fig.R
+  Figure: html viewer.R
   FigureType: new
-
-- Class: text
-  Output: Bootstrapping is also incredibly useful for creating confidence intervals for distributions that are not necessarily normally distributed. It is more robust to deviations from normality since it is only resampling from the obtained data and does not require such strict assumptions to be made. It also naturally extends to finding behaviors of other statistics such as medians.
   
 - Class: text
-  Output: One disadvantage of using bootstrapping is that the assumption is made that the sample that is being bootstrapped from is indeed a good representation of the population. If it is too small or is a poor representation, then the bootstrapped samples will not mimic the behavior in the population. It is also not useful for statistics such as minimums or maximums, due to the limitations of the obtained sample.
+  Output: This example shows us a few things. One is that bootstrapping is incredibly useful for investigating skewed data and skewed or non-normal sampling distributions. It is more robust to deviations from normality since it is only resampling from the obtained data and does not require such strict assumptions to be made. In a similar way, we can also do bootstrapping on distributions that are unknown.
+
+- Class: text
+  Output: Bootstrapping also naturally extends to describing statistics such as medians, where we do not have a formula for finding the standard error or confidence intervals.
+  
+- Class: text
+  Output: One disadvantage of using bootstrapping is that the assumption is made that the sample that is being bootstrapped from is indeed a good representation of the population. If it is too small or is a poor representation, then the bootstrapped samples will not mimic the behavior in the population. It is also not useful for statistics such as minimums or maximums, since these values are constrained by the original sample.
+  
+- Class: text
+  Output: There is certainly more information that you can learn about the bootstrap through the resources I've provided, but hopefully this lesson gives you the tools you need to get started! Happy bootstrapping!
   
 
 

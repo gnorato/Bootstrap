@@ -10,3 +10,6 @@ install_course_github("gnorato","Bootstrap")
 uninstall_course("Bootstrap")
 uninstall_course("gnorato-Bootstrap-de4f91e")
 uninstall_course("swirl_course")
+
+abline(v=median(samp)+(1.96*sd(samp)/sqrt(samplesize)), col="blue")
+abline(v=median(samp)-(1.96*sd(samp)/sqrt(samplesize)), col="blue")

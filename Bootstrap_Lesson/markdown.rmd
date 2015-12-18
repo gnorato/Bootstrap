@@ -10,7 +10,7 @@ Say we have a sample from a true underlying distribution
 ```{r}
 set.seed(1293)
 pop <- rgamma(10000, shape=1, scale=2)
-samplesize=100
+samplesize=200
 samp <- sample(pop, size=samplesize, replace=T)
 ```
 
@@ -20,43 +20,41 @@ First we will define how many bootstrapped samples we would like to take:
 boot = 10000
 ```
 
-Then we will create an empty vector to store the statistics (means)
+Then we will create an empty vector to store the statistics. Here we will use median to demonstrate the usefulness of bootstrapping for statistics with unknown or non-normal distributions.
 ```{r}
-boot.mean <- rep(NA,boot)
+boot.median <- rep(NA,boot)
 ```
 
 Then we will sample, with replacement, a new set of data from the observed sample, and calculate the statistic for each.
 ```{r}
 for (i in 1:boot){
   boot.i <- sample(samp, samplesize, replace=T)
-  boot.mean[i] <- mean(boot.i)
+  boot.median[i] <- median(boot.i)
 }
 ```
 Now we can plot the results:
 ```{r}
-hist(boot.mean, main="Distribution of Sample Mean, Bootstrap", xlab=NA)
+hist(boot.median, main="Distribution of Sample Median, Bootstrap", xlab=NA)
 
 ```
 
 We can also calculate the variance and the percentile confidence intervals
 ```{r}
-var <- var(boot.mean)
+var <- var(boot.median)
 var
 
-ci <- quantile(boot.mean,probs=c(.025,.975))
+ci <- quantile(boot.median,probs=c(.025,.975))
 ci
 ```
 
-We can visualize the difference between the bootstrapped CI and the CI from the usual method:
+We can visualize this to show the confidence intervals we have obtained:
 ```{r, echo=F}
-plot(density(boot.mean), main="Distribution of Sample Mean", xlab=NA)
-abline(v=mean(samp))
+plot(density(boot.median), main="Distribution of Bootstrapped Sample Median", xlab=NA)
+abline(v=median(samp))
 abline(v=ci[1], col="red")
 abline(v=ci[2], col="red")
-abline(v=mean(samp)+(1.96*sd(samp)/sqrt(samplesize)), col="blue")
-abline(v=mean(samp)-(1.96*sd(samp)/sqrt(samplesize)), col="blue")
 
-legend("topright", c("Bootstrap", "Normal Assumption") ,col=c("red", "blue"), pch=1)
+legend("topleft", c("Bootstrap CI", "Original Sample Median") ,col=c("red",  "black"), pch=1)
 
 ```
 
