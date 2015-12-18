@@ -18,7 +18,7 @@
   Output: In a nutshell, bootstrapping helps us understand the sampling distribution of a particular statistic (sample mean, median, etc.), by drawing samples with replacement from the observed sample. 
   
 - Class: text
-  Output: When we collect data from a population to obtain a sample, we want to be able to have a measure of variability of this statistic in order to perform proper inference. Often, however, we only have the current, single sample, and getting additional unique samples may be difficult or unreasonable. We can instead take repeated sampling from our obtained sample. This mimics the acquisition of multiple samples from the population, and can help us describe the error of our statistic.
+  Output: When we collect data from a population to obtain a sample, we want to be able to have a measure of variability of this statistic in order to perform proper inference. Often, however, we only have the current, single sample, and getting additional unique samples may be difficult or unreasonable. We can instead take repeated samples from our obtained sample. This mimics the acquisition of multiple samples from the population, and can help us describe the error of our statistic.
   
 - Class: text
   Output: Let's look at an simple example to get some intuition.
@@ -35,13 +35,13 @@
                               'pop <- rnorm(n=10000, mean=0, sd=2)')
   Hint: Type "pop <- rnorm(10000, 0, 2)"
   
-- Class: figure
+- Class: text
   Output: Great! Let's see what that looks like. We can plot this easily with hist()
+  
+- Class: figure
+  Output: Now we have our original population. Now imagine we run a study and end up with a sample of this underlying population that we can investigate. Here we will use the 'sample()' function to do this.
   Figure: figure1.R
   FigureType: new
-  
-- Class: text
-  Output: Cool! Now we have our original population. Now imagine we run a study and end up with a sample of this underlying population that we can investigate. Here we will use the 'sample()' function to do this.
   
 - Class: text
   Output: The 'sample()' function allows us to sample from a vector, with a certain size, and with or without replacement. We will use this function again later, but here we will just use it to generate our original sampled data. Don't forget you can access more information about this function using ?sample.
@@ -140,12 +140,10 @@
   FigureType: new
 
 - Class: text
-  Output: Bootstrapping is also incredibly useful for creating confidence intervals for distributions that are not necessarily normally distributed. It is more robust to deviations from normality since it is only resampling from the obtained data and does not require such strict assumptions to be made. 
-  
-
+  Output: Bootstrapping is also incredibly useful for creating confidence intervals for distributions that are not necessarily normally distributed. It is more robust to deviations from normality since it is only resampling from the obtained data and does not require such strict assumptions to be made. It also naturally extends to finding behaviors of other statistics such as medians.
   
 - Class: text
-  Output: One disadvantage of using bootstrapping is that the assumption is made that the sample that is being bootstrapped from is indeed a good representation of the population. If it is too small or is a poor representation, then the bootstrapped samples will not mimic the behavior in the population.
+  Output: One disadvantage of using bootstrapping is that the assumption is made that the sample that is being bootstrapped from is indeed a good representation of the population. If it is too small or is a poor representation, then the bootstrapped samples will not mimic the behavior in the population. It is also not useful for statistics such as minimums or maximums, due to the limitations of the obtained sample.
   
 
 

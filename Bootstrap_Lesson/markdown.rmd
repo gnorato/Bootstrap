@@ -1,5 +1,5 @@
 ---
-title: "Bootstrapping Samples Manually"
+title: "Bootstrapping Samples"
 output: html_document
 ---
 
@@ -47,7 +47,8 @@ ci <- quantile(boot.mean,probs=c(.025,.975))
 ci
 ```
 
-```{r}
+We can visualize the difference between the bootstrapped CI and the CI from the usual method:
+```{r, echo=F}
 plot(density(boot.mean), main="Distribution of Sample Mean", xlab=NA)
 abline(v=mean(samp))
 abline(v=ci[1], col="red")
