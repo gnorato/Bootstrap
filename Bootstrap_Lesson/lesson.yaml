@@ -11,7 +11,7 @@
   Output: "Welcome to the Bootstrap course! Here we will learn about what boostrapping is and how it can be useful in data analysis."
 
 - Class: video
-  Output: Bootstrapping is a technique first described by Bradley Efron in a 1979 paper. Would you like to go to the article now (page will open in your default web browser)?
+  Output: Bootstrapping is a technique first described by Bradley Efron in a 1979 paper. Would you like to go to the article now? (page will open in your default web browser)
   VideoLink: https://projecteuclid.org/download/pdf_1/euclid.aos/1176344552
     
 - Class: text
@@ -44,7 +44,7 @@
   FigureType: new
   
 - Class: text
-  Output: The 'sample()' function allows us to sample from a vector, to create a new vector of a certain size, and with or without replacement. We will use this function again later, but here we will just use it to generate our original sampled data. Don't forget you can access more information about this function using ?sample.
+  Output: The 'sample()' function allows us to sample from a vector, to create a new vector of a certain size, with or without replacement. We will use this function again later, but here we will just use it to generate our original sampled data. Don't forget you can access more information about this function using ?sample.
   
 - Class: cmd_question
   Output: Let's try it out. Generate our 200-observation sample with the command "samp <- sample(pop, size=200, replace=T)"
@@ -56,7 +56,7 @@
   Output: Now we have a sample. Let's plot that too (using hist())
   
 - Class: figure
-  Output: Now we have a sample from our population. Let's see what the mean and sd are...
+  Output: Let's see what the mean and sd are...
   Figure: figure2.R
   FigureType: new
   
@@ -71,9 +71,21 @@
   CorrectAnswer: samp.sd <- sd(samp)
   AnswerTests: any_of_exprs('samp.sd <- sd(samp)','samp.sd = sd(samp)')
   Hint: Type "samp.sd <- sd(samp)"
+  
+- Class: cmd_question
+  Output: Let's print samp.mean to check the value
+  CorrectAnswer: samp.mean
+  AnswerTests: omnitest('samp.mean')
+  Hint: Type "samp.mean"
+  
+- Class: cmd_question
+  Output: And let's also print samp.sd
+  CorrectAnswer: samp.sd
+  AnswerTests: omnitest('samp.sd')
+  Hint: Type "samp.sd"
 
 - Class: text
-  Output: We see that our mean is pretty close to the population mean, but maybe we want to know how variable our estimate of the mean is. This is where bootstrapping comes in.
+  Output: We see that our mean is pretty close to the population mean, but maybe we want to know how variable our estimate of the mean is, without making any assumptions about distributional form. This is where bootstrapping comes in.
 
 - Class: text
   Output: What we want to do is simulate taking repeated samples from the population by taking repeated samples from the obtained sample. This seems confusing, but let's try it out and get some intuition as we go.
@@ -126,7 +138,7 @@
   Output: On the left we see a histogram of the statistic (means) of our bootstrapped samples. We can see that these values all fall very closely around 0, which we know is the true underlying mean of the population. On the right is a normal probability plot or QQ-plot. If the distribution appears to be normal, then using assumptions of normality when creating confidence intervals with the bootstrap standard error would be appropriate.
   
 - Class: text
-  Output: There are many different methods of calculation of these confidence intervals, all of which are available through the boot library, (and which can be read about further here <http://www.tau.ac.il/~saharon/Boot/10.1.1.133.8405.pdf>). For this example, we will use the percentile method. In the percentile method, the 2.5% and 97.5% quantiles are calculated from the bootstrapped distribution, and form the lower and upper bounds of the confidence interval. This method is robust to the shape of the bootstrapped distribution.
+  Output: There are many different methods of calculation of these confidence intervals, all of which are available through the boot library, (and which can be read about further here <http://www.tau.ac.il/~saharon/Boot/10.1.1.133.8405.pdf>). For this example, we will use the percentile method. In the percentile method, the 2.5% and 97.5% quantiles are calculated from the bootstrapped distribution, and form the lower and upper bounds of the confidence interval. This method is robust to the shape of the bootstrapped distribution of the statistic.
   
 - Class: cmd_question
   Output: Let's get the confidence interval now- boot.ci(boot,type="perc")
@@ -149,10 +161,10 @@
   Output: This example shows us a few things. One is that bootstrapping is incredibly useful for investigating skewed data and skewed or non-normal sampling distributions. It is more robust to deviations from normality since it is only resampling from the obtained data and does not require such strict assumptions to be made. In a similar way, we can also do bootstrapping on distributions that are unknown.
 
 - Class: text
-  Output: Bootstrapping also naturally extends to describing statistics such as medians, where we do not have a formula for finding the standard error or confidence intervals.
+  Output: Bootstrapping also naturally extends to describing statistics such as medians, where we do not have a formula for finding the standard error or confidence intervals, or also is used to bootstrap regression coefficients.
   
 - Class: text
-  Output: One disadvantage of using bootstrapping is that the assumption is made that the sample that is being bootstrapped from is indeed a good representation of the population. If it is too small or is a poor representation, then the bootstrapped samples will not mimic the behavior in the population. It is also not useful for statistics such as minimums or maximums, since these values are constrained by the original sample.
+  Output: One disadvantage of using bootstrapping is that the assumption is made that the sample that is being bootstrapped from is indeed a good representation of the population. If it is too small or is a poor representation, then the bootstrapped samples will not mimic the behavior in the population. It is also not useful for statistics such as minima or maxima, since these values are constrained by the original sample.
   
 - Class: text
   Output: There is certainly more information that you can learn about the bootstrap through the resources I've provided, but hopefully this lesson gives you the tools you need to get started! Happy bootstrapping!

@@ -25,36 +25,30 @@ Then we will create an empty vector to store the statistics. Here we will use me
 boot.median <- rep(NA,boot)
 ```
 
-Then we will sample, with replacement, a new set of data from the observed sample, and calculate the statistic for each.
+Then we will repeatedly sample, with replacement, a new set of data from the observed sample, and calculate the statistic for each.
 ```{r}
 for (i in 1:boot){
   boot.i <- sample(samp, samplesize, replace=T)
   boot.median[i] <- median(boot.i)
 }
 ```
-Now we can plot the results:
-```{r}
-hist(boot.median, main="Distribution of Sample Median, Bootstrap", xlab=NA)
 
-```
-
-We can also calculate the variance and the percentile confidence intervals
+We can also calculate the variance and the percentile confidence intervals. Here percentile confidence intervals are useful due to the robustness to the distributional form of the statistic.
 ```{r}
-var <- var(boot.median)
-var
+var(boot.median)
 
 ci <- quantile(boot.median,probs=c(.025,.975))
 ci
 ```
 
-We can visualize this to show the confidence intervals we have obtained:
+We can plot the bootstrapped distributions of medians and show the confidence intervals we have obtained:
 ```{r, echo=F}
 plot(density(boot.median), main="Distribution of Bootstrapped Sample Median", xlab=NA)
 abline(v=median(samp))
 abline(v=ci[1], col="red")
 abline(v=ci[2], col="red")
 
-legend("topleft", c("Bootstrap CI", "Original Sample Median") ,col=c("red",  "black"), pch=1)
+legend("topleft", c("Percentile CI", "Original Sample Median") ,col=c("red",  "black"), pch=1)
 
 ```
 
